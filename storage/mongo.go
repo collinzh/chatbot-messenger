@@ -65,8 +65,19 @@ func (m *mongodbStorageImpl) SaveChat(authCode string, messages []types.Message,
 }
 
 func (m *mongodbStorageImpl) Prune() error {
-	//TODO implement me
-	panic("implement me")
+	// for chats that have not been updated in a while
+	deleteUntil := time.Now().UnixMilli() - conf.Retention().Milliseconds()
+	filter := bson.D{{"last_updated", bson.D{{"$lt", deleteUntil}}}}
+
+	// Remove message history
+	update := bson.D{{"$set", bson.D{{"messages", []string{}}}}}
+
+	_, err := m.database.Collection(collectionChat).UpdateMany(context.Background(), filter, update)
+	if err != nil {
+		logger.Logger().Err(err).Msg("Unable to prune storage")
+	}
+
+	return nil
 }
 
 func newMongoStorage() Storage {

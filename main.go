@@ -7,6 +7,7 @@ import (
 	"github.com/collinzh/chatbot-messenger/server"
 	"github.com/collinzh/chatbot-messenger/storage"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -17,6 +18,8 @@ func main() {
 	if err := s.Connect(); err != nil {
 		logger.Logger().Fatal().Err(err).Msg("Cannot connect to storage")
 	}
+
+	storage.ScheduleMessagePruning(s, 1*time.Minute)
 
 	ai := bot.New(s)
 

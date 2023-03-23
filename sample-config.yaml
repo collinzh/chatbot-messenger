@@ -9,3 +9,5 @@ server:
 storage:
   mongodb:
     uri: mongodb://user:pwd@localhost:27017/messenger
+chat:
+  retention: 600
