@@ -1,0 +1,11 @@
+debug: false
+bind:
+  host: 127.0.0.1
+  port: 8080
+openai:
+  key: my_api_key
+server:
+  trusted-proxies: 127.0.0.1 ::1
+storage:
+  mongodb:
+    uri: mongodb://user:pwd@localhost:27017/messenger
